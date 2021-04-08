@@ -1,0 +1,30 @@
+{% load static %}
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- CSS files -->
+    <link href="{% static 'dist/css/tabler.min.css' %}" rel="stylesheet">
+    <link href="{% static 'dist/css/tabler-flags.min.css' %}" rel="stylesheet">
+    <link href="{% static 'dist/css/tabler-payments.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'dist/css/tabler-vendors.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'dist/css/demo.min.css' %}" rel="stylesheet"/>
+</head>
+<body class="antialiased">
+<div class="wrapper">
+    {% include 'header.html' %}
+    {% include 'navbar.html' %}
+    {% block content %}{% endblock content %}
+    {% include 'footer.html' %}
+</div>
+{% block script %}
+{% endblock script %}
+<script src="{% static 'dist/js/tabler.min.js' %}"></script>
+<!-- Libs JS -->
+    <script src="{% static 'dist/libs/apexcharts/dist/apexcharts.min.js' %}"></script>
+    <!-- Tabler Core -->
+    <script src="{% static 'dist/js/tabler.min.js' %}"></script>
+
+</body>
+</html>
