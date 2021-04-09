@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'source',
     'user',
     'home',
+    'course',
+
 ]
 
 MIDDLEWARE = [
