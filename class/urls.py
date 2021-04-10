@@ -8,11 +8,11 @@
 @Contact    :   thooooor999@gmail.com
 @Describe   :   None
 """
-from django.conf.urls import url
+from django.urls import path
 from . import views
 
 app_name = "class"
 
 urlpatterns = [
-    url("info/", views.class_info, name="class")
+    path("info/", views.class_info, name="class")
 ]
