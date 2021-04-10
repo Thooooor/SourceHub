@@ -9,10 +9,10 @@
 @Describe   :   None
 """
 from django.conf.urls import url
-
+from . import views
 
 app_name = "class"
 
 urlpatterns = [
-
+    url("info/", views.class_info, name="class")
 ]

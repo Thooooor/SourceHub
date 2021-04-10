@@ -13,15 +13,15 @@
 </head>
 <body class="antialiased">
 <div class="wrapper">
-    {% include 'header.html' %}
-    {% include 'navbar.html' %}
+{#    {% include 'header.html' %}#}
+    {% include 'sidebar.html' %}
     {% block content %}{% endblock content %}
     {% include 'footer.html' %}
 </div>
 {% block script %}
 {% endblock script %}
 <script src="{% static 'dist/js/tabler.min.js' %}"></script>
-<!-- Libs JS -->
+    <!-- Libs JS -->
     <script src="{% static 'dist/libs/apexcharts/dist/apexcharts.min.js' %}"></script>
     <!-- Tabler Core -->
     <script src="{% static 'dist/js/tabler.min.js' %}"></script>

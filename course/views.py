@@ -1,3 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def course_list(request):
+    context = {}
+
+    return render(request, "course/course.html", context)

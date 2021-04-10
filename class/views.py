@@ -1,3 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def class_info(request):
+    context = {}
+
+    return render(request, "class/class.html", context)
