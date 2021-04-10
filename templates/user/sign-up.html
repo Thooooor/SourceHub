@@ -1,0 +1,91 @@
+{% load static %}
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Sign up - SourceHub</title>
+    <!-- CSS files -->
+    <link href="{% static 'dist/css/tabler.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'dist/css/tabler-flags.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'dist/css/tabler-payments.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'dist/css/tabler-vendors.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'dist/css/demo.min.css' %}" rel="stylesheet"/>
+</head>
+<body class="antialiased border-top-wide border-primary d-flex flex-column">
+<div class="page page-center">
+    <div class="container-tight py-4">
+        <div class="text-center mb-4">
+            <a><img src="{% static 'logo2.svg' %}" height="36" alt=""></a>
+        </div>
+        <form class="card card-md" action="{% url 'user:sign_up' %}" method="post">
+            {% csrf_token %}
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">创建账号</h2>
+                <div class="mb-3">
+                    <label class="form-label" for="user_type">身份</label>
+                    <select class="form-select" name="user_type" id="user_type">
+                        <option value="student">学生</option>
+                        <option value="teacher">教师</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="user_id">学号/工号</label>
+                    <input type="text" name="user_id" id="user_id" class="form-control" placeholder="Enter student/teacher code">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="username">姓名</label>
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Enter name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="email">邮箱地址</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter email">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="password">输入密码</label>
+                    <div class="input-group input-group-flat">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off">
+                        <span class="input-group-text">
+                            <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                                     stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <circle cx="12" cy="12" r="2"></circle>
+                                    <path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7"></path>
+                                </svg>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="password2">确认密码</label>
+                    <div class="input-group input-group-flat">
+                            <input type="password" name="password2" id="password2" class="form-control" placeholder="Password" autocomplete="off">
+                        <span class="input-group-text">
+                            <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                                     stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <circle cx="12" cy="12" r="2"></circle>
+                                    <path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7"></path>
+                                </svg>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary w-100">创建账号</button>
+                </div>
+            </div>
+        </form>
+        <div class="text-center text-muted mt-3">
+            已经有账号了？ <a href="{% url 'user:sign_in' %}" tabindex="-1">登录</a>
+        </div>
+    </div>
+</div>
+<!-- Libs JS -->
+<!-- Tabler Core -->
+<script src="{% static 'dist/js/tabler.min.js' %}"></script>
+</body>
+</html>
