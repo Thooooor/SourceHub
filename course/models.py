@@ -17,7 +17,7 @@ class Semester(models.Model):
 class Course(models.Model):
     course_id = models.CharField(max_length=128)
     course_name = models.CharField(max_length=128)
-    semesters = models.ManyToManyField(Semester, related_name="courses")
+    semesters = models.ManyToManyField(Semester, related_name="courses", blank=True)
 
     class Meta:
         ordering = ("-course_id", )
