@@ -47,8 +47,8 @@
                         </span>
                     </a>
                 </li>
-                <li class="nav-item {% if page == 'course' %} active {% endif %}">
-                    <a class="nav-link" href="">
+                <li class="nav-item {% if page == 'course' %} active {% endif %} dropdown" id="course-li">
+                    <a class="nav-link dropdown-toggle" role="button" aria-expanded="true" {% if page != 'course' %} onclick="courseClick()" {% endif %}>
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/file-text -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clipboard-list"
                                  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -66,9 +66,20 @@
                             课程
                         </span>
                     </a>
+                    <div class="dropdown-menu {% if page == 'course' %} show {% endif %}" id="course-menu">
+                        <div class="dropdown-menu-columns">
+                            <div class="dropdown-menu-column">
+                                <a class="dropdown-item {% if sub_page == 'course_list' %} active {% endif %}"
+                                   href="{% url 'course:course_list' %}">课程列表</a>
+                                <a class="dropdown-item {% if sub_page == 'course_post' %} active {% endif %}"
+                                   href="{% url 'course:course_post' %}">增加课程</a>
+                            </div>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item {% if page == 'source' %} active {% endif %} dropdown" id="source-li">
-                    <a class="nav-link dropdown-toggle" role="button" aria-expanded="true" {% if page != 'source' %} onclick="sourceClick()" {% endif %}>
+                    <a class="nav-link dropdown-toggle" role="button" aria-expanded="true" {% if page != 'source' %}
+                       onclick="sourceClick()" {% endif %}>
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/file-text -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                  viewBox="0 0 24 24"
@@ -89,9 +100,9 @@
                     <div class="dropdown-menu {% if page == 'source' %} show {% endif %}" id="source-menu">
                         <div class="dropdown-menu-columns">
                             <div class="dropdown-menu-column">
-                                <a class="dropdown-item {% if sub_page == 'list' %} active {% endif %}"
+                                <a class="dropdown-item {% if sub_page == 'source_list' %} active {% endif %}"
                                    href="{% url 'source:source_list' %}">资源列表</a>
-                                <a class="dropdown-item {% if sub_page == 'post' %} active {% endif %}"
+                                <a class="dropdown-item {% if sub_page == 'source_post' %} active {% endif %}"
                                    href="{% url 'source:source_post' %}">上传资源</a>
                             </div>
                         </div>
@@ -106,6 +117,16 @@
     <script type="text/javascript">
         function sourceClick() {
             let sourceMenu = document.getElementById("source-menu");
+            if (sourceMenu.className === "dropdown-menu show") {
+                sourceMenu.className = "dropdown-menu";
+            } else {
+                sourceMenu.className = "dropdown-menu show";
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function courseClick() {
+            let sourceMenu = document.getElementById("course-menu");
             if (sourceMenu.className === "dropdown-menu show") {
                 sourceMenu.className = "dropdown-menu";
             } else {

@@ -44,7 +44,6 @@ def user_sign_up(request):
         user_sign_up_form = UserSignUpForm(data=request.POST)
         if user_sign_up_form.is_valid():
             form_data = user_sign_up_form.cleaned_data
-            print(form_data)
             username = form_data["username"]
             email = form_data["email"]
             user_type = form_data["user_type"]
@@ -55,7 +54,6 @@ def user_sign_up(request):
             new_user.email = email
             new_user.set_password(user_sign_up_form.cleaned_data["password"])
             new_user.save()
-            print(Profile.objects.all())
             profile = Profile()
             profile.user = new_user
             profile.user_type = user_type

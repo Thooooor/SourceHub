@@ -10,7 +10,6 @@ def index(request):
     profile = Profile.objects.get(user=user)
     if profile.user_type == "student":
         student = Student.objects.get(user=user)
-
     context = {
         "profile": profile,
         "page": "home",

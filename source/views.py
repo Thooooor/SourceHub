@@ -11,7 +11,7 @@ from .forms import SourcePostForm
 def source_list(request):
     context = {
         "page": "source",
-        "sub_page": "list"
+        "sub_page": "source_list"
     }
 
     return render(request, "source/source-list.html", context)

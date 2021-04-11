@@ -6,7 +6,7 @@ from course.models import Course
 
 
 class Source(models.Model):
-    source_id = models.CharField(max_length=128)
+    source_id = models.BigAutoField(primary_key=True)
     source_name = models.CharField(max_length=128)
 
     courses = models.ManyToManyField(Course, related_name="sources")
