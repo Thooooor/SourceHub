@@ -24,7 +24,6 @@ def source_post(request):
     user = request.user
     if request.method == "POST":
         source_post_form = SourcePostForm(request.POST, request.FILES)
-        print(source_post_form.errors)
         if source_post_form.is_valid():
             form_data = source_post_form.cleaned_data
             source_name = form_data["source_name"]
@@ -43,7 +42,6 @@ def source_post(request):
             return HttpResponse("表单内容有误，请重新填写。")
     elif request.method == "GET":
         source_post_form = SourcePostForm()
-        print(source_post_form)
         courses = Course.objects.all()
         course_list = []
         for i, course in enumerate(courses):

@@ -4,10 +4,27 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <h1 class="navbar-brand navbar-brand-autodark page-title">
+                SourceHub
+        </h1>
         <h1 class="navbar-brand navbar-brand-autodark">
-            <a href=".">
-                <img src="{% static 'logo2.svg' %}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
-            </a>
+            <div class="nav-item dropdown">
+                <a class="nav-link d-flex lh-1 text-reset p-0" href="{% url 'user:user-info' user.id %}">
+                    <span class="avatar avatar-sm" style="background-image: url({% static 'student.svg' %})"></span>
+                    <div class="d-none d-xl-block ps-2">
+                        <div>{{ user.username }}</div>
+                        <div class="mt-1 small text-muted">{{ user.profile.user_type }}</div>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <a href="#" class="dropdown-item">Set status</a>
+                    <a href="#" class="dropdown-item">Profile & account</a>
+                    <a href="#" class="dropdown-item">Feedback</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">Settings</a>
+                    <a href="#" class="dropdown-item">Logout</a>
+                </div>
+            </div>
         </h1>
         <div class="collapse navbar-collapse" id="navbar-menu">
             <ul class="navbar-nav pt-lg-3">
@@ -48,7 +65,8 @@
                     </a>
                 </li>
                 <li class="nav-item {% if page == 'course' %} active {% endif %} dropdown" id="course-li">
-                    <a class="nav-link dropdown-toggle" role="button" aria-expanded="true" {% if page != 'course' %} onclick="courseClick()" {% endif %}>
+                    <a class="nav-link dropdown-toggle" role="button" aria-expanded="true" {% if page != 'course' %}
+                       onclick="courseClick()" {% endif %}>
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/file-text -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clipboard-list"
                                  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -71,8 +89,10 @@
                             <div class="dropdown-menu-column">
                                 <a class="dropdown-item {% if sub_page == 'course_list' %} active {% endif %}"
                                    href="{% url 'course:course_list' %}">课程列表</a>
-                                <a class="dropdown-item {% if sub_page == 'course_post' %} active {% endif %}"
-                                   href="{% url 'course:course_post' %}">增加课程</a>
+                                {% if user.profile.user_type == "teacher" %}
+                                    <a class="dropdown-item {% if sub_page == 'course_post' %} active {% endif %}"
+                                       href="{% url 'course:course_post' %}">增加课程</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

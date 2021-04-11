@@ -8,11 +8,8 @@ from user.models import Profile, Student, Teacher
 def index(request):
     user = request.user
     profile = Profile.objects.get(user=user)
-    if profile.user_type == "student":
-        student = Student.objects.get(user=user)
     context = {
         "profile": profile,
         "page": "home",
     }
-
     return render(request, "home/index.html", context)

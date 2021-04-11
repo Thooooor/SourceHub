@@ -84,9 +84,9 @@ def user_sign_up(request):
 
 
 @login_required(login_url="/user/sign-in/")
-def sign_out(request):
+def user_sign_out(request):
     logout(request)
-    return redirect(to="user:sign-in")
+    return redirect(to="home:index")
 
 
 @login_required(login_url="/user/sign-in/")
@@ -95,15 +95,19 @@ def delete_user(request):
     if request.user == user:
         logout(request)
         user.delete()
-        return redirect(to="user:sign-in")
+        return redirect(to="home:index")
     else:
         return HttpResponse("你没有删除操作的权限")
 
 
-def user_info(request):
+@login_required(login_url="/user/sign-in/")
+def user_info(request, id):
+    user = User.objects.get(id=id)
+    if request.user != user:
+        return HttpResponse("你没有权限查看此用户的信息。")
     context = {}
 
-    return render(request, "", context)
+    return render(request, "user/user-info.html", context)
 
 
 def message_detail(request, id):

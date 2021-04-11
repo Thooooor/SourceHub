@@ -8,7 +8,7 @@ from course.models import Course
 class Source(models.Model):
     source_id = models.BigAutoField(primary_key=True)
     source_name = models.CharField(max_length=128)
-    source_file = models.FileField()
+    source_file = models.FileField(upload_to='files/%Y%m%d/')
 
     courses = models.ManyToManyField(Course, related_name="sources")
 

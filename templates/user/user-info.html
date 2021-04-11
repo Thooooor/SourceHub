@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            用户
+                        </div>
+                        <h2 class="page-title">
+                            用户信息
+                        </h2>
+                    </div>
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                        <span class="d-none d-sm-inline">
+                            <a href="#" class="btn btn-white">
+                                New View
+                            </a>
+                        </span>
+                            <a href="{% url 'user:sign-out' %}" class="btn btn-danger d-none d-sm-inline-block">
+                                退出
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="row row-cards">
+                    <div class="col-md-6 col-xl-4">
+                        <div class="row row-cards">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p>This is some text within a card body.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-8">
+                        <div class="row row-cards">
+                            <div class="col-12">
+                                <div class="card-group">
+                                    <a href="#" class="card card-inactive text-center">
+                                        <div class="card-body">
+                                            <p>This is first card</p>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="card card-active text-center">
+                                        <div class="card-body">
+                                            <p>This is second card</p>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="card text-center">
+                                        <div class="card-body">
+                                            <p>This is third card</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -68,18 +68,20 @@
                                         <span class="badge bg-cyan me-1">{{ course.sources.count }}</span>
                                     </td>
                                     <td>
-                                        {% if user.teacher not in course.teachers.all %}
-                                            <a href="#" class="btn btn-primary">授课</a>
-                                        {% elif user.profile.user_type == "teacher" %}
-                                            {% if course.course_status == 'open' %}
-                                                <a href="#" class="btn btn-secondary">结课</a>
+                                        {% if user.profile.user_type == "teacher" %}
+                                            {% if user.teacher not in course.teachers.all %}
+                                                <a href="#" class="btn btn-primary">授课</a>
                                             {% else %}
-                                                <a href="#" class="btn btn-success">开课</a>
+                                                {% if course.course_status == 'open' %}
+                                                    <a href="#" class="btn btn-secondary">结课</a>
+                                                {% else %}
+                                                    <a href="#" class="btn btn-success">开课</a>
+                                                {% endif %}
+                                                <a href="#" class="btn btn-danger">删除</a>
                                             {% endif %}
-                                            <a href="#" class="btn btn-danger">删除</a>
                                         {% else %}
                                             {% if course.course_status == 'open' %}
-                                                {% if user.student not in  course.students %}
+                                                {% if user.student not in course.students.all %}
                                                     <a href="#" class="btn btn-success">选课</a>
                                                 {% else %}
                                                     <a href="#" class="btn btn-secondary">已选</a>
