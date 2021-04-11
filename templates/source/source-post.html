@@ -1,5 +1,84 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            资源
+                        </div>
+                        <h2 class="page-title">
+                            上传资源
+                        </h2>
+                    </div>
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                        <span class="d-none d-sm-inline">
+                            <a href="#" class="btn btn-white">
+                                New View
+                            </a>
+                        </span>
+                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                               data-bs-target="#modal-report">
+                                Add
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{% url 'source:source_post' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label" for="source_name">资源名称</label>
+                                <div class="col">
+                                    <input type="text" class="form-control" placeholder="Enter Source Name"
+                                           name="source_name" id="source_name">
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label" for="id_source_file">资源文件</label>
+                                <div class="col">
+                                    <input type="file" class="form-control" name="source_file" required id="id_source_file">
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label" for="course_names">课程列表</label>
+                                <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+                                    {% for course in course_list %}
+                                        <label class="form-selectgroup-item flex-fill" for="{{ course.id }}">
+                                            <input type="checkbox" name="course_names" value="{{ course.value }}"
+                                                   id="{{ course.id }}" class="form-selectgroup-input">
+                                            <div class="form-selectgroup-label d-flex align-items-center p-3">
+                                                <div class="me-3">
+                                                    <span class="form-selectgroup-check"></span>
+                                                </div>
+                                                <div class="form-selectgroup-label-content d-flex align-items-center">
+                                                    <div>
+                                                        <div class="font-weight-medium">{{ course.name }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-primary" value="提交">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -18,6 +18,7 @@ class Course(models.Model):
     course_id = models.BigAutoField(primary_key=True)
     course_name = models.CharField(max_length=128)
     semesters = models.ManyToManyField(Semester, related_name="courses")
+    course_status = models.CharField(max_length=128, default="open")
 
     class Meta:
         ordering = ("course_id", )

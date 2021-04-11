@@ -9,10 +9,10 @@
                     <div class="col">
                         <!-- Page pre-title -->
                         <div class="page-pretitle">
-                            Overview
+                            课程
                         </div>
                         <h2 class="page-title">
-                            Fluid vertical layout
+                            课程列表
                         </h2>
                     </div>
                     <!-- Page title actions -->
@@ -35,9 +35,6 @@
         <div class="page-body">
             <div class="container-fluid">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">课程列表</h3>
-                    </div>
                     <div class="table-responsive">
                         <table class="table card-table table-vcenter text-nowrap datatable">
                             <thead>
@@ -45,8 +42,9 @@
                                 <th>编号NO.</th>
                                 <th>课程名字</th>
                                 <th>授课教师</th>
-                                <th>开课状态</th>
+                                <th>课程状态</th>
                                 <th>资源数量</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -56,11 +54,39 @@
                                     <td>{{ course.course_name }}</td>
                                     <td>
                                         {% for teacher in course.teachers.all %}
-                                            {{ teacher.teacher_name }}
+                                            <span class="badge bg-info me-1">{{ teacher.teacher_name }}</span>
                                         {% endfor %}
                                     </td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>
+                                        {% if course.course_status == 'open' %}
+                                            <span class="badge bg-success me-1">已开课</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary me-1">未开课</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-cyan me-1">{{ course.sources.count }}</span>
+                                    </td>
+                                    <td>
+                                        {% if user.teacher not in course.teachers.all %}
+                                            <a href="#" class="btn btn-primary">授课</a>
+                                        {% elif user.profile.user_type == "teacher" %}
+                                            {% if course.course_status == 'open' %}
+                                                <a href="#" class="btn btn-secondary">结课</a>
+                                            {% else %}
+                                                <a href="#" class="btn btn-success">开课</a>
+                                            {% endif %}
+                                            <a href="#" class="btn btn-danger">删除</a>
+                                        {% else %}
+                                            {% if course.course_status == 'open' %}
+                                                {% if user.student not in  course.students %}
+                                                    <a href="#" class="btn btn-success">选课</a>
+                                                {% else %}
+                                                    <a href="#" class="btn btn-secondary">已选</a>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -70,5 +96,4 @@
             </div>
         </div>
     </div>
-
 {% endblock %}

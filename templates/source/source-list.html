@@ -1,5 +1,92 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            资源
+                        </div>
+                        <h2 class="page-title">
+                           资源列表
+                        </h2>
+                    </div>
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                        <span class="d-none d-sm-inline">
+                            <a href="#" class="btn btn-white">
+                                New View
+                            </a>
+                        </span>
+                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                               data-bs-target="#modal-report">
+                                Add
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="card">
+{#                    <div class="card-header">#}
+{#                        <h3 class="card-title">资源列表</h3>#}
+{#                    </div>#}
+                    <div class="table-responsive">
+                        <table class="table card-table table-vcenter text-nowrap datatable">
+                            <thead>
+                            <tr>
+                                <th>编号NO.</th>
+                                <th>资源名字</th>
+                                <th>相关课程</th>
+                                <th>上传者</th>
+                                <th>资源大小</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for source in sources %}
+                                <tr>
+                                    <td>{{ source.source_id }}</td>
+                                    <td>{{ source.source_name }}</td>
+                                    <td>
+                                        {% for course in source.courses.all %}
+                                            <span class="badge bg-info me-1">{{ course.course_name }}</span>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-success me-1">{{ source.upload_user }}</span>
+                                    </td>
+                                    <td>
+                                        {{ source.source_file.size }} KB
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary">下载</a>
+                                        {% if source.upload_user == user %}
+                                            <a href="#" class="btn btn-danger">删除</a>
+                                        {% else %}
+                                            {% if source.source_status == 'open' %}
+                                                {% if source.students %}
+                                                    <a href="#" class="btn btn-success">选课</a>
+                                                {% else %}
+                                                    <a href="#" class="btn btn-info">已选</a>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

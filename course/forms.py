@@ -10,11 +10,20 @@
 """
 from django import forms
 from .models import Course
+from user.models import Teacher
 
 
 class CoursePostForm(forms.ModelForm):
     course_name = forms.CharField()
-    teacher_names = forms.CharField()
+    course_status = forms.CharField(empty_value='close')
+    teacher_names = forms.ModelMultipleChoiceField(
+        queryset=None,
+        widget=forms.CheckboxSelectMultiple()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['teacher_names'].queryset = Teacher.objects.all()
 
     class Meta:
         model = Course
