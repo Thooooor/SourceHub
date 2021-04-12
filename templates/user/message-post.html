@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            私信
+                        </div>
+                        <h2 class="page-title">
+                            新建私信
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{% url 'user:message_post' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label" for="message_title">标题</label>
+                                <div class="col">
+                                    <input type="text" class="form-control" placeholder="Enter Message Title"
+                                           name="message_title" id="message_title">
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label" for="message_body">内容</label>
+                                <div class="col">
+                                    <textarea type="text" class="form-control" name="message_body" rows="6" id="message_body" placeholder="请输入..."></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label" for="recv_user">收信人</label>
+                                <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column" id="user_list">
+                                    {% for candidate in user_list %}
+                                        <label class="form-selectgroup-item flex-fill">
+                                            <input type="radio" name="recv_user" id="recv_user"
+                                                   value="{{  candidate.username }}" class="form-selectgroup-input">
+                                            <div class="form-selectgroup-label d-flex align-items-center p-3">
+                                                <div class="me-3">
+                                                    <span class="form-selectgroup-check"></span>
+                                                </div>
+                                                <div class="form-selectgroup-label-content d-flex align-items-center">
+                                                    <div>
+                                                        <div class="font-weight-medium">{{ candidate.username }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

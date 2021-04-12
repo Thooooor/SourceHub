@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .forms import UserSignInForm, UserSignUpForm
+from .forms import UserSignInForm, UserSignUpForm, MessagePostForm
 from .models import Message, Profile, Student, Teacher
 
 
@@ -103,11 +103,65 @@ def delete_user(request):
 @login_required(login_url="/user/sign-in/")
 def user_info(request, id):
     user = User.objects.get(id=id)
+    recv_list = user.recv_messages.all()
+    send_list = user.send_messages.all()
+    read_list = []
+    unread_list = []
+    for message in recv_list:
+        if message.message_status == 'unread':
+            unread_list.append(message)
+        else:
+            read_list.append(message)
+
     if request.user != user:
         return HttpResponse("你没有权限查看此用户的信息。")
-    context = {}
+    user_type = user.profile.user_type
+    if user_type == "student":
+        user_type = "学生"
+        profile = user.student
+    else:
+        user_type = "老师"
+        profile = user.teacher
+
+    context = {
+        "user_type": user_type,
+        "profile": profile,
+        "unread_list": unread_list,
+        "read_list": read_list,
+        "send_list": send_list
+    }
 
     return render(request, "user/user-info.html", context)
+
+
+@login_required(login_url="/user/sign-in/")
+def message_post(request):
+    if request.method == "POST":
+        message_post_form = MessagePostForm(data=request.POST)
+        if message_post_form.is_valid():
+            data = message_post_form.cleaned_data
+            message_title = data["message_title"]
+            message_body = data["message_body"]
+            username = data["recv_user"]
+            recv_user = User.objects.get(username=username)
+            new_message = Message()
+            new_message.title = message_title
+            new_message.body = message_body
+            new_message.send = request.user
+            new_message.receive = recv_user
+            new_message.save()
+        return redirect(to="user:user_info", id=request.user.id)
+    elif request.method == "GET":
+        message_post_form = MessagePostForm()
+        print(message_post_form)
+        user_list = User.objects.all()
+        context = {
+            "form": message_post_form,
+            "user_list": user_list
+        }
+        return render(request, "user/message-post.html", context)
+    else:
+        return HttpResponse("请使用GET或POST请求数据。")
 
 
 def message_detail(request, id):

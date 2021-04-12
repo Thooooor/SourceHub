@@ -39,14 +39,16 @@ class Profile(models.Model):
 
 
 class Message(models.Model):
-    message_id = models.CharField(max_length=128)
     title = models.CharField(max_length=128)
     body = models.TextField()
-    send = models.ForeignKey(User, on_delete=models.CASCADE, related_name="send_message", null=True, blank=True)
-    receive = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recv_message", null=True, blank=True)
+    send = models.ForeignKey(User, on_delete=models.CASCADE, related_name="send_messages", null=True, blank=True)
+    receive = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recv_messages", null=True, blank=True)
     send_time = models.TimeField(auto_now=True)
-    read_time = models.TimeField(null=True)
-    status = models.CharField(default="Unread", max_length=128)
+    read_time = models.TimeField(null=True, blank=True)
+    message_status = models.CharField(default="unread", max_length=128)
 
     class Meta:
-        ordering = ("-message_id",)
+        ordering = ("-send_time",)
+
+    def __str__(self):
+        return self.title

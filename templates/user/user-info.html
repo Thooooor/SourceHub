@@ -19,11 +19,11 @@
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
                         <span class="d-none d-sm-inline">
-                            <a href="#" class="btn btn-white">
-                                New View
+                            <a href="{% url 'user:message_post' %}" class="btn btn-azure">
+                                发私信
                             </a>
                         </span>
-                            <a href="{% url 'user:sign-out' %}" class="btn btn-danger d-none d-sm-inline-block">
+                            <a href="{% url 'user:sign_out' %}" class="btn btn-danger d-none d-sm-inline-block">
                                 退出
                             </a>
                         </div>
@@ -38,8 +38,80 @@
                         <div class="row row-cards">
                             <div class="col-12">
                                 <div class="card">
+                                    <div class="card-body text-center hvr-glow">
+                                        <div class="text-uppercase text-muted font-weight-medium">information</div>
+                                        <div class="display-5 my-3">{{ user.username }}</div>
+                                        <div class="display-6 my-3">{{ user_type }}</div>
+                                        {% if user.profile.user_type == "student" %}
+                                            <div class="display-6 my-3">{{ user.student.student_id }}</div>
+                                            <div>
+                                                <span class="badge bg-info me-1 hvr-bob">已选课程：{{ user.student.courses.count }}</span>
+                                                <span class="badge bg-success me-1 hvr-bob">上传资源：{{ user.sources.count }}</span>
+                                            </div>
+                                        {% else %}
+                                            <div class="display-6 my-3">{{ user.teacher.teacher_id }}</div>
+                                            <span class="badge bg-info me-1 hvr-bob">教授课程：{{ user.teacher.courses.count }}</span>
+                                            <span class="badge bg-success me-1 hvr-bob">上传资源：{{ user.sources.count }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% if user.profile.user_type == "student" %}
+                                <div class="col-12 hvr-glow">
+                                    <div class="card">
+                                        <div class="text-center">
+                                            <h2 class="card-header">已选课程 Courses</h2>
+                                        </div>
+                                        <div class="card-body">
+                                            {% for course in user.teacher.courses.all %}
+                                                <h2>
+                                                    {% if course.course_status == 'open' %}
+                                                        <span class="badge bg-success me-1 hvr-float-shadow">已开课</span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary me-1 hvr-float-shadow">未开课</span>
+                                                    {% endif %}
+                                                    {{ course.course_name }}
+                                                </h2>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="col-12 hvr-glow">
+                                    <div class="card">
+                                        <div class="text-center">
+                                            <h2 class="card-header">教授课程 Courses</h2>
+                                        </div>
+                                        <div class="card-body">
+                                            {% for course in user.teacher.courses.all %}
+                                                <h3>
+                                                    {% if course.course_status == 'open' %}
+                                                        <span class="badge bg-success me-1 hvr-float-shadow">已开课</span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary me-1 hvr-float-shadow">未开课</span>
+                                                    {% endif %}
+                                                    <span class="badge bg-cyan me-1 hvr-fade">选课人数：{{ course.students.count }}</span>
+                                                    {{ course.course_name }}
+                                                </h3>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="col-12 hvr-glow">
+                                <div class="card">
+                                    <div class="text-center">
+                                        <h2 class="card-header">上传资源 Sources</h2>
+                                    </div>
                                     <div class="card-body">
-                                        <p>This is some text within a card body.</p>
+                                        {% for source in user.sources.all %}
+                                            <h2>
+                                                {{ source.source_name }}
+                                                {% for course in source.courses.all %}
+                                                    <span class="badge bg-lime me-1">{{ course.course_name }}</span>
+                                                {% endfor %}
+                                            </h2>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
@@ -47,23 +119,68 @@
                     </div>
                     <div class="col-md-6 col-xl-8">
                         <div class="row row-cards">
-                            <div class="col-12">
-                                <div class="card-group">
-                                    <a href="#" class="card card-inactive text-center">
-                                        <div class="card-body">
-                                            <p>This is first card</p>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="card card-active text-center">
-                                        <div class="card-body">
-                                            <p>This is second card</p>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="card text-center">
-                                        <div class="card-body">
-                                            <p>This is third card</p>
-                                        </div>
-                                    </a>
+                            <div class="col-12 hvr-glow">
+                                <div class="card">
+                                    <div class="text-center">
+                                        <h2 class="card-header">未读私信 Messages</h2>
+                                    </div>
+                                    <div class="card-body">
+                                        {% if unread_list.count == 0 %}
+                                            <h2>暂无</h2>
+                                        {% endif %}
+                                        {% for message in unread_list %}
+                                            <h2>
+                                                {{ message.title }}
+                                                <span class="badge bg-info me-1 hvr-fade">{{ message.send_time }}</span>
+                                                <span class="badge bg-teal me-1 hvr-fade">from：{{ message.send }}</span>
+                                                <span class="badge bg-secondary me-1 hvr-fade">未读</span>
+                                            </h2>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 hvr-glow">
+                                <div class="card">
+                                    <div class="text-center">
+                                        <h2 class="card-header">已读私信 Messages</h2>
+                                    </div>
+                                    <div class="card-body">
+                                        {% if read_list.count == 0 %}
+                                            <h2>暂无</h2>
+                                        {% endif %}
+                                        {% for message in read_list %}
+                                            <h2>
+                                                {{ message.title }}
+                                                <span class="badge bg-info me-1 hvr-fade">{{ message.send_time }}</span>
+                                                <span class="badge bg-teal me-1 hvr-fade">from：{{ message.send }}</span>
+                                                <span class="badge bg-success me-1 hvr-fade">已读</span>
+                                            </h2>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 hvr-glow">
+                                <div class="card">
+                                    <div class="text-center">
+                                        <h2 class="card-header">已发送私信 Messages</h2>
+                                    </div>
+                                    <div class="card-body">
+                                        {% if send_list.count == 0 %}
+                                            <h3>暂无</h3>
+                                        {% endif %}
+                                        {% for message in send_list %}
+                                            <h2>
+                                                {{ message.title }}
+                                                <span class="badge bg-info me-1 hvr-fade">{{ message.send_time }}</span>
+                                                <span class="badge bg-teal me-1 hvr-fade">to：{{ message.receive }}</span>
+                                                {% if message.message_status == 'unread' %}
+                                                    <span class="badge bg-secondary me-1 hvr-fade">未读</span>
+                                                {% else %}
+                                                    <span class="badge bg-success me-1 hvr-fade">已读</span>
+                                                {% endif %}
+                                            </h2>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>

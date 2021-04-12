@@ -9,21 +9,13 @@
         </h1>
         <h1 class="navbar-brand navbar-brand-autodark">
             <div class="nav-item dropdown">
-                <a class="nav-link d-flex lh-1 text-reset p-0" href="{% url 'user:user-info' user.id %}">
+                <a class="nav-link d-flex lh-1 text-reset p-0" href="{% url 'user:user_info' user.id %}">
                     <span class="avatar avatar-sm" style="background-image: url({% static 'student.svg' %})"></span>
                     <div class="d-none d-xl-block ps-2">
                         <div>{{ user.username }}</div>
                         <div class="mt-1 small text-muted">{{ user.profile.user_type }}</div>
                     </div>
                 </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <a href="#" class="dropdown-item">Set status</a>
-                    <a href="#" class="dropdown-item">Profile & account</a>
-                    <a href="#" class="dropdown-item">Feedback</a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">Settings</a>
-                    <a href="#" class="dropdown-item">Logout</a>
-                </div>
             </div>
         </h1>
         <div class="collapse navbar-collapse" id="navbar-menu">
@@ -31,10 +23,8 @@
                 <li class="nav-item {% if page == 'home' %} active {% endif %}">
                     <a class="nav-link" href="{% url 'home:index' %}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                 viewBox="0 0 24 24"
-                                 stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                                 stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                                 stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <polyline points="5 12 3 12 12 3 21 12 19 12"></polyline>
                                 <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>

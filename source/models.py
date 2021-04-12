@@ -12,7 +12,7 @@ class Source(models.Model):
 
     courses = models.ManyToManyField(Course, related_name="sources")
 
-    upload_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    upload_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sources")
     upload_time = models.DateTimeField(default=timezone.now)
     download_counts = models.BigIntegerField(default=0)
 

@@ -10,10 +10,17 @@
 """
 from django import forms
 from django.contrib.auth.models import User
+from .models import Message
 
 
-class ProfileForm(forms.ModelForm):
-    pass
+class MessagePostForm(forms.Form):
+    message_title = forms.CharField()
+    message_body = forms.CharField(widget=forms.Textarea)
+    recv_user = forms.CharField()
+
+    class Meta:
+        model = Message
+        fields = ("title", "body")
 
 
 class UserSignInForm(forms.Form):
