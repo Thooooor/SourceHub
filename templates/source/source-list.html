@@ -18,14 +18,8 @@
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
-                        <span class="d-none d-sm-inline">
-                            <a href="#" class="btn btn-white">
-                                New View
-                            </a>
-                        </span>
-                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
-                               data-bs-target="#modal-report">
-                                Add
+                            <a href="{% url 'source:source_post' %}" class="btn btn-primary d-none d-sm-inline-block">
+                                上传
                             </a>
                         </div>
                     </div>
@@ -35,9 +29,6 @@
         <div class="page-body">
             <div class="container-fluid">
                 <div class="card">
-{#                    <div class="card-header">#}
-{#                        <h3 class="card-title">资源列表</h3>#}
-{#                    </div>#}
                     <div class="table-responsive">
                         <table class="table card-table table-vcenter text-nowrap datatable">
                             <thead>
@@ -67,17 +58,9 @@
                                         {{ source.source_file.size }} KB
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-primary">下载</a>
+                                        <a  href="{{ source.source_file.url }}" class="btn btn-primary" download= id="">下载</a>
                                         {% if source.upload_user == user %}
-                                            <a href="#" class="btn btn-danger">删除</a>
-                                        {% else %}
-                                            {% if source.source_status == 'open' %}
-                                                {% if source.students %}
-                                                    <a href="#" class="btn btn-success">选课</a>
-                                                {% else %}
-                                                    <a href="#" class="btn btn-info">已选</a>
-                                                {% endif %}
-                                            {% endif %}
+                                            <a href="{% url 'source:source_delete' source.source_id %}" class="btn btn-danger">删除</a>
                                         {% endif %}
                                     </td>
                                 </tr>

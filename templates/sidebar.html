@@ -5,12 +5,13 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <h1 class="navbar-brand navbar-brand-autodark page-title">
-                SourceHub
+            SourceHub
         </h1>
         <h1 class="navbar-brand navbar-brand-autodark">
             <div class="nav-item dropdown">
                 <a class="nav-link d-flex lh-1 text-reset p-0" href="{% url 'user:user_info' user.id %}">
-                    <span class="avatar avatar-sm" style="background-image: url({% static 'student.svg' %})"></span>
+                    <span class="avatar"
+                          style="background-image: url({% static 'student.svg' %}); border-radius: 50%;"></span>
                     <div class="d-none d-xl-block ps-2">
                         <div>{{ user.username }}</div>
                         <div class="mt-1 small text-muted">{{ user.profile.user_type }}</div>
@@ -23,8 +24,10 @@
                 <li class="nav-item {% if page == 'home' %} active {% endif %}">
                     <a class="nav-link" href="{% url 'home:index' %}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                                 stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                 viewBox="0 0 24 24"
+                                 stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                 stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <polyline points="5 12 3 12 12 3 21 12 19 12"></polyline>
                                 <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
@@ -36,21 +39,19 @@
                         </span>
                     </a>
                 </li>
-                <li class="nav-item {% if page == 'class' %} active {% endif %}">
+                <li class="nav-item {% if page == 'school' %} active {% endif %}">
                     <a class="nav-link" href="">
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/file-text -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-friends"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school"
                                  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                  fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <circle cx="7" cy="5" r="2"></circle>
-                                <path d="M5 22v-5l-1 -1v-4a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4l-1 1v5"></path>
-                                <circle cx="17" cy="5" r="2"></circle>
-                                <path d="M15 22v-4h-2l2 -6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1l2 6h-2v4"></path>
+                                <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6"></path>
+                                <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4"></path>
                             </svg>
                         </span>
                         <span class="nav-link-title">
-                            班级
+                            学院
                         </span>
                     </a>
                 </li>

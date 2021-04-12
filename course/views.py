@@ -53,7 +53,7 @@ def course_post(request):
         for i, teacher in enumerate(teachers):
             name = teacher.teacher_name
             id = "id_teacher_names_%d" % i
-            teacher_list.append(TeacherItem(name, i+1, id))
+            teacher_list.append(TeacherItem(name, teacher.id, id))
         context = {
             "form": course_post_form,
             "teacher_list": teacher_list,

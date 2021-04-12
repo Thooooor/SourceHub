@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from course.models import Course
+from school.models import School
 
 
 class Student(models.Model):
@@ -9,6 +10,7 @@ class Student(models.Model):
     student_id = models.CharField(max_length=128)
     student_name = models.CharField(max_length=128)
     courses = models.ManyToManyField(Course, related_name="students", blank=True)
+    school = models.ForeignKey(School, blank=True, on_delete=models.CASCADE, related_name="students", null=True)
 
     class Meta:
         ordering = ("-student_id", )
@@ -22,6 +24,7 @@ class Teacher(models.Model):
     teacher_id = models.CharField(max_length=128)
     teacher_name = models.CharField(max_length=128)
     courses = models.ManyToManyField(Course, related_name="teachers", blank=True)
+    school = models.ForeignKey(School, blank=True, on_delete=models.CASCADE, related_name="teachers", null=True)
 
     class Meta:
         ordering = ("-teacher_id", )

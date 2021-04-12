@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -24,5 +26,7 @@ urlpatterns = [
     path('source/', include('source.urls', namespace='source')),
     path('user/', include('user.urls', namespace='user')),
     path('course/', include('course.urls', namespace='course')),
-    path('class/', include('class.urls', namespace='class')),
+    path('school/', include('school.urls', namespace='school')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

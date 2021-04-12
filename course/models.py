@@ -1,5 +1,7 @@
 from django.db import models
 
+from school.models import School
+
 
 class Semester(models.Model):
     semester_id = models.BigAutoField(primary_key=True)
@@ -19,6 +21,7 @@ class Course(models.Model):
     course_name = models.CharField(max_length=128)
     semesters = models.ManyToManyField(Semester, related_name="courses")
     course_status = models.CharField(max_length=128, default="open")
+    schools = models.ManyToManyField(School, blank=True, related_name="courses")
 
     class Meta:
         ordering = ("course_id", )

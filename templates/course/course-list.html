@@ -16,19 +16,15 @@
                         </h2>
                     </div>
                     <!-- Page title actions -->
+                    {% if user.profile.user_type == 'teacher' %}
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
-                        <span class="d-none d-sm-inline">
-                            <a href="#" class="btn btn-white">
-                                New View
-                            </a>
-                        </span>
-                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
-                               data-bs-target="#modal-report">
-                                Add
+                            <a href="{% url 'course:course_post' %}" class="btn btn-primary d-none d-sm-inline-block">
+                                新增
                             </a>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
