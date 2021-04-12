@@ -60,10 +60,15 @@ def source_post(request):
 
 
 @login_required(login_url="/user/sign-in/")
-def source_detail(request):
-    context = {}
+def source_delete(request, id):
+    user = request.user
+    source = Source.objects.get(id=id)
+    if user != source.upload_user:
+        return HttpResponse("你没有进行该操作的权限。")
 
-    return render(request, "source/source-detail.html", context)
+    Source.delete(source)
+
+    return redirect(to="source:source_list")
 
 
 class CourseItem:

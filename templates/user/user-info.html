@@ -130,7 +130,9 @@
                                         {% endif %}
                                         {% for message in unread_list %}
                                             <h2>
-                                                {{ message.title }}
+                                                <a href="{% url 'user:message_detail' message.id %}">
+                                                    {{ message.title }}
+                                                </a>
                                                 <span class="badge bg-info me-1 hvr-fade">{{ message.send_time }}</span>
                                                 <span class="badge bg-teal me-1 hvr-fade">from：{{ message.send }}</span>
                                                 <span class="badge bg-secondary me-1 hvr-fade">未读</span>
@@ -150,7 +152,9 @@
                                         {% endif %}
                                         {% for message in read_list %}
                                             <h2>
-                                                {{ message.title }}
+                                                <a href="{% url 'user:message_detail' message.id %}">
+                                                    {{ message.title }}
+                                                </a>
                                                 <span class="badge bg-info me-1 hvr-fade">{{ message.send_time }}</span>
                                                 <span class="badge bg-teal me-1 hvr-fade">from：{{ message.send }}</span>
                                                 <span class="badge bg-success me-1 hvr-fade">已读</span>
@@ -170,7 +174,9 @@
                                         {% endif %}
                                         {% for message in send_list %}
                                             <h2>
-                                                {{ message.title }}
+                                                <a href="{% url 'user:message_detail' message.id %}">
+                                                    {{ message.title }}
+                                                </a>
                                                 <span class="badge bg-info me-1 hvr-fade">{{ message.send_time }}</span>
                                                 <span class="badge bg-teal me-1 hvr-fade">to：{{ message.receive }}</span>
                                                 {% if message.message_status == 'unread' %}

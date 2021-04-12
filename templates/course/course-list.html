@@ -70,21 +70,21 @@
                                     <td>
                                         {% if user.profile.user_type == "teacher" %}
                                             {% if user.teacher not in course.teachers.all %}
-                                                <a href="#" class="btn btn-primary">授课</a>
+                                                <a href="{% url 'course:course_pick' course.course_id %}" class="btn btn-primary">授课</a>
                                             {% else %}
                                                 {% if course.course_status == 'open' %}
-                                                    <a href="#" class="btn btn-secondary">结课</a>
+                                                    <a href="{% url 'course:course_status_change' course.course_id %}" class="btn btn-secondary">结课</a>
                                                 {% else %}
-                                                    <a href="#" class="btn btn-success">开课</a>
+                                                    <a href="{% url 'course:course_status_change' course.course_id %}" class="btn btn-success">开课</a>
                                                 {% endif %}
-                                                <a href="#" class="btn btn-warning">退出</a>
-                                                <a href="#" class="btn btn-danger">删除</a>
+                                                <a href="{% url 'course:course_drop' course.course_id %}" class="btn btn-warning">退出</a>
+                                                <a href="{% url 'course:course_delete' course.course_id %}" class="btn btn-danger">删除</a>
                                             {% endif %}
                                         {% else %}
                                             {% if user.student not in course.students.all %}
-                                                <a href="#" class="btn btn-success">选课</a>
+                                                <a href="{% url 'course:course_pick' course.course_id %}" class="btn btn-success">选课</a>
                                             {% else %}
-                                                <a href="#" class="btn btn-secondary">已选</a>
+                                                <a href="{% url 'course:course_drop' course.course_id %}" class="btn btn-warning">退课</a>
                                             {% endif %}
                                         {% endif %}
                                     </td>

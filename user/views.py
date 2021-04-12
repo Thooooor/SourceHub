@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.utils.timezone import now
+import markdown
 
 from .forms import UserSignInForm, UserSignUpForm, MessagePostForm
 from .models import Message, Profile, Student, Teacher
@@ -164,11 +166,24 @@ def message_post(request):
         return HttpResponse("请使用GET或POST请求数据。")
 
 
+@login_required(login_url="/user/sign-in/")
 def message_detail(request, id):
-    Message.objects.get(id=id)
-    context = {}
-
-    return render(request, "", context)
+    user = request.user
+    message = Message.objects.get(id=id)
+    if user != message.send and user != message.receive:
+        return HttpResponse("你没有查看这条消息的权限。")
+    elif user == message.receive and message.message_status == 'unread':
+        message.message_status = "read"
+        message.read_time = now()
+        message.save()
+    message.body = markdown.markdown(
+        message.body,
+        extensions=['markdown.extensions.extra', 'markdown.extensions.codehilite']
+    )
+    context = {
+        "message": message
+    }
+    return render(request, "user/message-detail.html", context)
 
 
 def check_email(email):

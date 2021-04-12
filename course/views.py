@@ -65,6 +65,74 @@ def course_post(request):
         return HttpResponse("请使用GET或POST请求数据。")
 
 
+@login_required(login_url="/user/sign-in/")
+def course_delete(request, id):
+    user = request.user
+    if user.profile.user_type == "student":
+        return HttpResponse("你没有进行该操作的权限。")
+    course = Course.objects.get(course_id=id)
+    if user.teacher not in course.teachers.all():
+        return HttpResponse("你没有进行该操作的权限。")
+    Course.delete(course)
+    return redirect(to="course:course_list")
+
+
+@login_required(login_url="/user/sign-in/")
+def course_status_change(request, id):
+    user = request.user
+    if user.profile.user_type == "student":
+        return HttpResponse("你没有进行该操作的权限。")
+    course = Course.objects.get(course_id=id)
+    if user.teacher not in course.teachers.all():
+        return HttpResponse("你没有进行该操作的权限。")
+
+    if course.course_status == "close":
+        course.course_status = "open"
+    else:
+        course.course_status = "close"
+    course.save()
+
+    return redirect(to="course:course_list")
+
+
+@login_required(login_url="/user/sign-in/")
+def course_pick(request, id):
+    user = request.user
+    course = Course.objects.get(course_id=id)
+    if user.profile.user_type == "student":
+        if user.student not in course.students.all():
+            user.student.courses.add(course)
+            user.student.save()
+        else:
+            return HttpResponse("你已经选择了该课程。")
+    else:
+        if user.teacher not in course.teachers.all():
+            user.teacher.courses.add(course)
+            user.teacher.save()
+        else:
+            return HttpResponse("你已经在教授该课程。")
+    return redirect(to="course:course_list")
+
+
+@login_required(login_url="/user/sign-in/")
+def course_drop(request, id):
+    user = request.user
+    course = Course.objects.get(course_id=id)
+    if user.profile.user_type == "student":
+        if user.student in course.students.all():
+            user.student.courses.remove(course)
+            user.student.save()
+        else:
+            return HttpResponse("你没有选择该课程。")
+    else:
+        if user.teacher in course.teachers.all():
+            user.teacher.courses.remove(course)
+            user.teacher.save()
+        else:
+            return HttpResponse("你没有教授该课程。")
+    return redirect(to="course:course_list")
+
+
 def check_course(course_name):
     courses = Course.objects.all()
     for course in courses:
