@@ -34,12 +34,14 @@
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label" for="id_source_file">资源文件</label>
                                 <div class="col">
-                                    <input type="file" class="form-control" name="source_file" required id="id_source_file">
+                                    <input type="file" class="form-control" name="source_file" required
+                                           id="id_source_file">
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label" for="course_names">课程列表</label>
-                                <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+                                <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column overflow-auto"
+                                     style="max-height: 20rem">
                                     {% for course in course_list %}
                                         <label class="form-selectgroup-item flex-fill" for="{{ course.id }}">
                                             <input type="checkbox" name="course_names" value="{{ course.value }}"

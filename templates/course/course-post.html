@@ -44,7 +44,8 @@
                             </div>
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label" for="school_name">学院</label>
-                                <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column" id="school_list">
+                                <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column overflow-auto"
+                                     style="max-height: 18rem" id="school_list">
                                     {% for school in school_list %}
                                         <label class="form-selectgroup-item flex-fill">
                                             <input type="radio" name="school_name" id="school_name"
@@ -66,7 +67,8 @@
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-form-label" for="teacher_names"
                                        id="id_teacher_names">教师列表</label>
-                                <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column" id="teacher_list">
+                                <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column overflow-auto"
+                                     style="max-height: 20rem" id="teacher_list">
                                     {% for teacher in teacher_list %}
                                         <label class="form-selectgroup-item" for="{{ teacher.id }}">
                                             <input type="checkbox" name="teacher_names" id="{{ teacher.id }}"
