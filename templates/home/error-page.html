@@ -1,0 +1,51 @@
+{% load static %}
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link rel="bookmark" type="image/x-icon" href="{% static 'logo.svg' %}">
+    <link rel="shortcut icon" href="{% static 'logo.svg' %}">
+    <title>Error - SourceHub</title>
+    <!-- CSS files -->
+    <link href="{% static 'dist/css/tabler.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'dist/css/tabler-flags.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'dist/css/tabler-payments.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'dist/css/tabler-vendors.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'dist/css/demo.min.css' %}" rel="stylesheet"/>
+</head>
+<body class="antialiased border-top-wide border-primary d-flex flex-column">
+<div class="page page-center">
+    <div class="container-tight py-4">
+        <div class="empty">
+            <img src="{% static 'logo.svg' %}" height="80" alt="">
+            <div class="empty-header">ERROR</div>
+            <p class="empty-title">{{ message }}</p>
+            <div class="empty-action">
+                <a class="btn btn-primary" onclick="onclickBack()">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/arrow-left -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <line x1="5" y1="12" x2="11" y2="18"></line>
+                        <line x1="5" y1="12" x2="11" y2="6"></line>
+                    </svg>
+                    返回
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Libs JS -->
+<!-- Tabler Core -->
+<script src="{% static 'dist/js/tabler.min.js' %}"></script>
+<script type="text/javascript">
+    function onclickBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

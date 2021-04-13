@@ -6,4 +6,5 @@ app_name = "home"
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('error-page/', views.error_page, name='error_page'),
 ]

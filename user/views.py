@@ -1,12 +1,12 @@
+import markdown
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.timezone import now
-import markdown
 
+from home.views import error_page
 from school.models import School
 from .forms import UserSignInForm, UserSignUpForm, MessagePostForm
 from .models import Message, Profile, Student, Teacher
@@ -26,15 +26,15 @@ def user_sign_in(request):
                 login(request, user)
                 return redirect(to="home:index")
             else:
-                return HttpResponse("账号或密码输入有误。请重新输入.")
+                return error_page(request, "账号或密码输入有误。请重新输入.")
         else:
-            return HttpResponse("账号或密码输入不合法。")
+            return error_page(request, "账号或密码输入不合法。")
     elif request.method == 'GET':
         user_sign_in_form = UserSignInForm()
         context = {'form': user_sign_in_form}
         return render(request, 'user/sign-in.html', context)
     else:
-        return HttpResponse("请使用GET或POST请求数据。")
+        return error_page(request, "请使用GET或POST请求数据。")
 
 
 def user_sign_up(request):
@@ -50,15 +50,15 @@ def user_sign_up(request):
             email = form_data["email"]
             user_type = form_data["user_type"]
             if check_user(email, username) is False:
-                return HttpResponse("该用户名/邮箱已经被注册。")
+                return error_page(request, "该用户名/邮箱已经被注册。")
             if user_type == "student":
                 student_id = form_data["user_id"]
                 if check_student(student_id) is False:
-                    return HttpResponse("该id已经注册。")
+                    return error_page(request, "该id已经注册。")
             else:
                 teacher_id = form_data["user_id"]
                 if check_teacher(teacher_id) is False:
-                    return HttpResponse("该id已经注册。")
+                    return error_page(request, "该id已经注册。")
             new_user = User()
             new_user.username = username
             new_user.email = email
@@ -87,7 +87,7 @@ def user_sign_up(request):
                 new_teacher.save()
             return redirect(to="home:index")
         else:
-            return HttpResponse("注册表单有误。请重新输入。")
+            return error_page(request, "注册表单有误。请重新输入。")
     elif request.method == 'GET':
         user_sign_up_form = UserSignUpForm()
         schools = School.objects.all()
@@ -97,7 +97,7 @@ def user_sign_up(request):
         }
         return render(request, 'user/sign-up.html', context)
     else:
-        return HttpResponse("请使用GET或POST请求数据。")
+        return error_page(request, "请使用GET或POST请求数据。")
 
 
 @login_required(login_url="/user/sign-in/")
@@ -114,7 +114,7 @@ def user_delete(request):
         user.delete()
         return redirect(to="home:index")
     else:
-        return HttpResponse("你没有删除操作的权限")
+        return error_page(request, "你没有删除操作的权限")
 
 
 @login_required(login_url="/user/sign-in/")
@@ -131,7 +131,7 @@ def user_info(request, id):
             read_list.append(message)
 
     if request.user != user:
-        return HttpResponse("你没有权限查看此用户的信息。")
+        return error_page(request, "你没有权限查看此用户的信息。")
     user_type = user.profile.user_type
     if user_type == "student":
         user_type = "学生"
@@ -177,7 +177,7 @@ def message_post(request):
         }
         return render(request, "user/message-post.html", context)
     else:
-        return HttpResponse("请使用GET或POST请求数据。")
+        return error_page(request, "请使用GET或POST请求数据。")
 
 
 @login_required(login_url="/user/sign-in/")
@@ -185,7 +185,7 @@ def message_detail(request, id):
     user = request.user
     message = Message.objects.get(id=id)
     if user != message.send and user != message.receive:
-        return HttpResponse("你没有查看这条消息的权限。")
+        return error_page(request, "你没有查看这条消息的权限。")
     elif user == message.receive and message.message_status == 'unread':
         message.message_status = "read"
         message.read_time = now()

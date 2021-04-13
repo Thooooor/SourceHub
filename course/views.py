@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
@@ -6,6 +5,7 @@ from school.models import School
 from .forms import CoursePostForm
 from .models import Course
 from user.models import Teacher, Profile
+from home.views import error_page
 
 
 @login_required(login_url="/user/sign-in/")
@@ -27,7 +27,7 @@ def course_list(request):
 def course_post(request):
     user = request.user
     if user.profile.user_type == "student":
-        return HttpResponse("对不起，你没有权限进行该操作。")
+        return error_page(request, "对不起，你没有权限进行该操作。")
     if request.method == "POST":
         course_post_form = CoursePostForm(data=request.POST)
         if course_post_form.is_valid():
@@ -37,7 +37,7 @@ def course_post(request):
             school_name = data["school_name"]
             teacher_names = data["teacher_names"]
             if check_course(course_name) is False:
-                return HttpResponse("已有该课程，请勿重复添加。")
+                return error_page(request, "已有该课程，请勿重复添加。")
             new_course = Course()
             new_course.course_name = course_name
             new_course.course_status = course_status
@@ -50,7 +50,7 @@ def course_post(request):
                 teacher.save()
             return redirect(to="course:course_list")
         else:
-            return HttpResponse("注册表单有误，请重新输入。")
+            return error_page(request, "注册表单有误，请重新输入。")
     elif request.method == "GET":
         course_post_form = CoursePostForm()
         teachers = Teacher.objects.all()
@@ -74,17 +74,17 @@ def course_post(request):
         }
         return render(request, "course/course-post.html", context)
     else:
-        return HttpResponse("请使用GET或POST请求数据。")
+        return error_page(request, "请使用GET或POST请求数据。")
 
 
 @login_required(login_url="/user/sign-in/")
 def course_delete(request, id):
     user = request.user
     if user.profile.user_type == "student":
-        return HttpResponse("你没有进行该操作的权限。")
+        return error_page(request, "你没有进行该操作的权限。")
     course = Course.objects.get(course_id=id)
     if user.teacher not in course.teachers.all():
-        return HttpResponse("你没有进行该操作的权限。")
+        return error_page(request, "你没有进行该操作的权限。")
     Course.delete(course)
     return redirect(to="course:course_list")
 
@@ -93,10 +93,10 @@ def course_delete(request, id):
 def course_status_change(request, id):
     user = request.user
     if user.profile.user_type == "student":
-        return HttpResponse("你没有进行该操作的权限。")
+        return error_page(request, "你没有进行该操作的权限。")
     course = Course.objects.get(course_id=id)
     if user.teacher not in course.teachers.all():
-        return HttpResponse("你没有进行该操作的权限。")
+        return error_page(request, "你没有进行该操作的权限。")
 
     if course.course_status == "close":
         course.course_status = "open"
@@ -116,13 +116,13 @@ def course_pick(request, id):
             user.student.courses.add(course)
             user.student.save()
         else:
-            return HttpResponse("你已经选择了该课程。")
+            return error_page(request, "你已经选择了该课程。")
     else:
         if user.teacher not in course.teachers.all():
             user.teacher.courses.add(course)
             user.teacher.save()
         else:
-            return HttpResponse("你已经在教授该课程。")
+            return error_page(request, "你已经在教授该课程。")
     return redirect(to="course:course_list")
 
 
@@ -135,13 +135,13 @@ def course_drop(request, id):
             user.student.courses.remove(course)
             user.student.save()
         else:
-            return HttpResponse("你没有选择该课程。")
+            return error_page(request, "你没有选择该课程。")
     else:
         if user.teacher in course.teachers.all():
             user.teacher.courses.remove(course)
             user.teacher.save()
         else:
-            return HttpResponse("你没有教授该课程。")
+            return error_page(request, "你没有教授该课程。")
     return redirect(to="course:course_list")
 
 

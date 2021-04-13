@@ -27,8 +27,18 @@ def index(request):
     return render(request, "home/index.html", context)
 
 
+def error_page(request, message):
+    context = {
+        "message": message,
+    }
+
+    return render(request, "home/error-page.html", context)
+
+
 def get_hot_sources():
     hot_sources = Source.objects.order_by("-download_counts")
+    if len(hot_sources) == 0:
+        return hot_sources, 0
     max_downloads = hot_sources[0].download_counts
     if len(hot_sources) > 7:
         hot_sources = hot_sources[:7]
@@ -38,6 +48,8 @@ def get_hot_sources():
 
 def get_hot_courses():
     hot_courses = list(Course.objects.all())
+    if len(hot_courses) == 0:
+        return hot_courses, 0
     hot_courses.sort(key=lambda course: course.students.count(), reverse=True)
     max_students = hot_courses[0].students.count()
     if len(hot_courses) > 7:
@@ -48,6 +60,8 @@ def get_hot_courses():
 
 def get_max_courses():
     max_courses = list(Course.objects.all())
+    if len(max_courses) == 0:
+        return max_courses, 0
     max_courses.sort(key=lambda course: course.sources.count(), reverse=True)
     max_course_sources = max_courses[0].students.count()
     if len(max_courses) > 7:

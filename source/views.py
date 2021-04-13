@@ -1,11 +1,10 @@
 import os
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, StreamingHttpResponse, FileResponse
 from django.shortcuts import render, redirect
-from django.utils.encoding import smart_str
 
 from course.models import Course
+from home.views import error_page
 from .forms import SourcePostForm
 from .models import Source
 
@@ -43,7 +42,7 @@ def source_post(request):
                 course.save()
             return redirect(to="source:source_list")
         else:
-            return HttpResponse("表单内容有误，请重新填写。")
+            return error_page(request, "表单内容有误，请重新填写。")
     elif request.method == "GET":
         source_post_form = SourcePostForm()
         courses = Course.objects.all()
@@ -60,7 +59,7 @@ def source_post(request):
         }
         return render(request, "source/source-post.html", context)
     else:
-        return HttpResponse("请使用GET或POST请求数据。")
+        return error_page(request, "请使用GET或POST请求数据。")
 
 
 @login_required(login_url="/user/sign-in/")
@@ -68,7 +67,7 @@ def source_delete(request, id):
     user = request.user
     source = Source.objects.get(source_id=id)
     if user != source.upload_user:
-        return HttpResponse("你没有进行该操作的权限。")
+        return error_page(request, "你没有进行该操作的权限。")
     file_path = source.source_file.path
     Source.delete(source)
     os.remove(file_path)
