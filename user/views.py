@@ -107,7 +107,7 @@ def user_sign_out(request):
 
 
 @login_required(login_url="/user/sign-in/")
-def user_delete(request):
+def user_delete(request, id):
     user = User.objects.get(id=id)
     if request.user == user:
         logout(request)

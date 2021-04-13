@@ -24,7 +24,7 @@
                                 发私信
                             </a>
                         </span>
-                            <a href="{% url 'user:user_delete' user.id %}"
+                            <a onclick="onclickDelete()"
                                class="btn btn-danger d-none d-sm-inline-block">
                                 删除账户
                             </a>
@@ -130,6 +130,7 @@
                                         {% for source in user.sources.all %}
                                             <h2>
                                                 {{ source.source_name }}
+                                                <span class="badge bg-orange me-1">下载次数：{{ source.download_counts }}</span>
                                                 {% for course in source.courses.all %}
                                                     <span class="badge bg-lime me-1">{{ course.course_name }}</span>
                                                 {% endfor %}
@@ -218,4 +219,40 @@
             </div>
         </div>
     </div>
+    <div class="modal modal-blur show" id="modal-small" tabindex="-1" role="dialog" aria-modal="true">
+      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="modal-title">确认删除账户?</div>
+            <div>如果删除，你会失去该账户的所有数据。</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal" onclick="onclickCancel()">取消</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="onclickConfirm()">是的，我确认删除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        function onclickDelete() {
+            let modal = document.getElementById("modal-small");
+            modal.style.display = "block";
+            modal.style.paddingRight = "6px";
+        }
+    </script>
+    <script type="text/javascript">
+        function onclickCancel() {
+            let modal = document.getElementById("modal-small");
+            modal.style.display = "";
+            modal.style.paddingRight = "";
+        }
+    </script>
+    <script>
+        function onclickConfirm() {
+            location.href = '{% url "user:user_delete" user.id %}';
+        }
+    </script>
 {% endblock %}
