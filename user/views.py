@@ -26,7 +26,7 @@ def user_sign_in(request):
                 login(request, user)
                 return redirect(to="home:index")
             else:
-                return error_page(request, "账号或密码输入有误。请重新输入.")
+                return error_page(request, "账号或密码输入有误，请重新输入。")
         else:
             return error_page(request, "账号或密码输入不合法。")
     elif request.method == 'GET':
@@ -54,11 +54,11 @@ def user_sign_up(request):
             if user_type == "student":
                 student_id = form_data["user_id"]
                 if check_student(student_id) is False:
-                    return error_page(request, "该id已经注册。")
+                    return error_page(request, "该id已经注册，请直接登录。")
             else:
                 teacher_id = form_data["user_id"]
                 if check_teacher(teacher_id) is False:
-                    return error_page(request, "该id已经注册。")
+                    return error_page(request, "该id已经注册，请直接登录。")
             new_user = User()
             new_user.username = username
             new_user.email = email

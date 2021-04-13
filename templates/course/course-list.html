@@ -16,16 +16,36 @@
                         </h2>
                     </div>
                     <!-- Page title actions -->
-                    {% if user.profile.user_type == 'teacher' %}
-                        <div class="col-auto ms-auto d-print-none">
-                            <div class="btn-list">
-                                <a href="{% url 'course:course_post' %}"
-                                   class="btn btn-primary d-none d-sm-inline-block">
-                                    新增
-                                </a>
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                            <div class="col">
+                                <form name="search_form" class="form-check-inline" id="search_form">
+                                    <div class="input-icon">
+                                        <span class="input-icon-addon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                 stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <circle cx="10" cy="10" r="7"></circle>
+                                                <line x1="21" y1="21" x2="15" y2="15"></line>
+                                            </svg>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Search for…"
+                                               name="search" aria-label=""
+                                               id="searchBox" {% if search %} value="{{ search }}"{% endif %} >
+                                    </div>
+                                </form>
                             </div>
+                            {% if user.profile.user_type == 'teacher' %}
+                                <div class="col-auto">
+                                    <a href="{% url 'course:course_post' %}"
+                                       class="btn btn-pink d-none d-sm-inline-block">
+                                        新增课程
+                                    </a>
+                                </div>
+                            {% endif %}
                         </div>
-                    {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

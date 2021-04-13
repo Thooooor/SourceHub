@@ -9,15 +9,21 @@ from home.views import error_page
 
 
 @login_required(login_url="/user/sign-in/")
-def course_list(request):
+def course_list(request, search=None):
+    if "search" in request.GET.keys():
+        search = request.GET["search"]
+        courses = search_course(search)
+    else:
+        courses = Course.objects.order_by("-course_status", "school")
+
     user = request.user
-    courses = Course.objects.all()
     profile = Profile.objects.get(user=user)
     context = {
         "courses": courses,
         "profile": profile,
         "page": "course",
         "sub_page": "course_list",
+        "search": search,
     }
 
     return render(request, "course/course-list.html", context)
@@ -151,6 +157,26 @@ def check_course(course_name):
         if course.course_name == course_name:
             return False
     return True
+
+
+def search_course(search):
+    courses = Course.objects.order_by("-course_status", "school")
+    result = []
+    for course in courses:
+        if search in course.course_name:
+            result.append(course)
+        elif search in ["开课", "已开课"] and course.course_status == "open":
+            result.append(course)
+        elif search in ["结课", "未开课"] and course.course_status == "close":
+            result.append(course)
+        elif search in course.school.school_name:
+            result.append(course)
+        else:
+            for teacher in course.teachers.all():
+                if search in teacher.teacher_name:
+                    result.append(course)
+                    break
+    return result
 
 
 class TeacherItem:

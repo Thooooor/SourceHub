@@ -10,12 +10,18 @@ from .models import Source
 
 
 @login_required(login_url="/user/sign-in/")
-def source_list(request):
-    sources = Source.objects.all()
+def source_list(request, search=None):
+    if "search" in request.GET.keys():
+        search = request.GET["search"]
+        sources = search_source(search)
+    else:
+        sources = Source.objects.order_by("-download_counts", "-upload_time")
+
     context = {
         "page": "source",
         "sub_page": "source_list",
         "sources": sources,
+        "search": search
     }
 
     return render(request, "source/source-list.html", context)
@@ -88,3 +94,19 @@ class CourseItem:
         self.name = name
         self.value = value
         self.id = id
+
+
+def search_source(search):
+    sources = Source.objects.order_by("-download_counts", "-upload_time")
+    results = []
+    for source in sources:
+        if search in source.source_name:
+            results.append(source)
+        elif search in source.upload_user.username:
+            results.append(source)
+        else:
+            for course in source.courses.all():
+                if search in course.course_name:
+                    results.append(source)
+                    break
+    return results

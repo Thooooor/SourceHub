@@ -15,6 +15,15 @@
                             新建私信
                         </h2>
                     </div>
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                            <a href="{% url 'user:user_info' user.id %}"
+                               class="btn btn-secondary d-none d-sm-inline-block">
+                                返回
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,10 +41,21 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label" for="message_body">内容</label>
+                                <label class="form-label col-3 col-form-label" for="message_body">
+                                    内容
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="icon icon-tabler icon-tabler-markdown" width="24" height="24"
+                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                         stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                                        <path d="M7 15v-6l2 2l2 -2v6"></path>
+                                        <path d="M14 13l2 2l2 -2m-2 2v-6"></path>
+                                    </svg>
+                                </label>
                                 <div class="col">
                                     <textarea type="text" class="form-control" name="message_body" rows="6"
-                                              id="message_body" placeholder="请输入..." required></textarea>
+                                              id="message_body" placeholder="请输入（支持markdown语法）..." required></textarea>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
