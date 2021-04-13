@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            学院
+                        </div>
+                        <h2 class="page-title">
+                            学院列表
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table card-table table-vcenter text-nowrap datatable">
+                            <thead>
+                            <tr>
+                                <th>学院名字</th>
+                                <th>老师数量</th>
+                                <th>课程数量</th>
+                                <th>学生数量</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for school in schools %}
+                                <tr>
+                                    <td>
+                                        <a class="h1" href="{% url 'school:school-detail' school.school_id %}" style="color: #1c2530">
+                                            {{ school.school_name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-success me-1">{{ school.teachers.count }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-yellow me-1">{{ school.courses.count }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-teal me-1">{{ school.students.count }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

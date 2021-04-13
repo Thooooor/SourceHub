@@ -9,8 +9,9 @@
 @Describe   :   None
 """
 from django import forms
-from .models import Course
+
 from user.models import Teacher
+from .models import Course
 
 
 class CoursePostForm(forms.ModelForm):
@@ -20,6 +21,7 @@ class CoursePostForm(forms.ModelForm):
         queryset=None,
         widget=forms.CheckboxSelectMultiple()
     )
+    school_name = forms.CharField()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

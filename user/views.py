@@ -7,16 +7,15 @@ from django.shortcuts import render, redirect
 from django.utils.timezone import now
 import markdown
 
+from school.models import School
 from .forms import UserSignInForm, UserSignUpForm, MessagePostForm
 from .models import Message, Profile, Student, Teacher
 
 
 def user_sign_in(request):
     user = request.user
-
     if user.is_authenticated:
         return redirect(to="home:index")
-
     if request.method == 'POST':
         user_sign_in_form = UserSignInForm(data=request.POST)
         if user_sign_in_form.is_valid():
@@ -47,10 +46,19 @@ def user_sign_up(request):
         if user_sign_up_form.is_valid():
             form_data = user_sign_up_form.cleaned_data
             username = form_data["username"]
+            school_name = form_data["school"]
             email = form_data["email"]
             user_type = form_data["user_type"]
-            if check_email(email) is False:
-                return HttpResponse("该邮箱已经被注册。")
+            if check_user(email, username) is False:
+                return HttpResponse("该用户名/邮箱已经被注册。")
+            if user_type == "student":
+                student_id = form_data["user_id"]
+                if check_student(student_id) is False:
+                    return HttpResponse("该id已经注册。")
+            else:
+                teacher_id = form_data["user_id"]
+                if check_teacher(teacher_id) is False:
+                    return HttpResponse("该id已经注册。")
             new_user = User()
             new_user.username = username
             new_user.email = email
@@ -60,12 +68,14 @@ def user_sign_up(request):
             profile.user = new_user
             profile.user_type = user_type
             profile.save()
+            school = School.objects.get(school_name=school_name)
             if user_type == "student":
                 student_id = form_data["user_id"]
                 new_student = Student()
                 new_student.user = new_user
                 new_student.student_id = student_id
                 new_student.student_name = username
+                new_student.school = school
                 new_student.save()
             else:
                 teacher_id = form_data["user_id"]
@@ -73,13 +83,18 @@ def user_sign_up(request):
                 new_teacher.user = new_user
                 new_teacher.teacher_id = teacher_id
                 new_teacher.teacher_name = username
+                new_teacher.school = school
                 new_teacher.save()
             return redirect(to="home:index")
         else:
             return HttpResponse("注册表单有误。请重新输入。")
     elif request.method == 'GET':
         user_sign_up_form = UserSignUpForm()
-        context = {"form": user_sign_up_form}
+        schools = School.objects.all()
+        context = {
+            "form": user_sign_up_form,
+            "schools": schools,
+        }
         return render(request, 'user/sign-up.html', context)
     else:
         return HttpResponse("请使用GET或POST请求数据。")
@@ -92,7 +107,7 @@ def user_sign_out(request):
 
 
 @login_required(login_url="/user/sign-in/")
-def delete_user(request):
+def user_delete(request):
     user = User.objects.get(id=id)
     if request.user == user:
         logout(request)
@@ -155,7 +170,6 @@ def message_post(request):
         return redirect(to="user:user_info", id=request.user.id)
     elif request.method == "GET":
         message_post_form = MessagePostForm()
-        print(message_post_form)
         user_list = User.objects.all()
         context = {
             "form": message_post_form,
@@ -186,10 +200,25 @@ def message_detail(request, id):
     return render(request, "user/message-detail.html", context)
 
 
-def check_email(email):
+def check_user(email, username):
     users = User.objects.all()
-
     for user in users:
-        if user.email == email:
+        if user.email == email or user.username == username:
+            return False
+    return True
+
+
+def check_student(id):
+    students = Student.objects.all()
+    for student in students:
+        if student.student_id == id:
+            return False
+    return True
+
+
+def check_teacher(id):
+    teachers = Teacher.objects.all()
+    for teacher in teachers:
+        if teacher.teacher_id == id:
             return False
     return True

@@ -1,76 +1,132 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div class="page-wrapper">
-    <div class="container-fluid">
-        <!-- Page title -->
-        <div class="page-header d-print-none">
-            <div class="row align-items-center">
-                <div class="col">
-                    <!-- Page pre-title -->
-                    <div class="page-pretitle">
-                        Overview
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            首页
+                        </div>
+                        <h2 class="page-title">
+                            总览
+                        </h2>
                     </div>
-                    <h2 class="page-title">
-                        Fluid vertical layout
-                    </h2>
-                </div>
-                <!-- Page title actions -->
-                <div class="col-auto ms-auto d-print-none">
-                    <div class="btn-list">
-                        <span class="d-none d-sm-inline">
-                            <a href="#" class="btn btn-white">
-                                New View
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                            <a href="{% url 'user:sign_out' %}" class="btn btn-warning d-none d-sm-inline-block">
+                                退出
                             </a>
-                        </span>
-                        <a href="{% url 'user:sign_out' %}" class="btn btn-primary d-none d-sm-inline-block">
-                            Add
-                        </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="page-body">
-        <div class="container-fluid">
-            <div class="row row-deck row-cards">
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <div class="subheader">Sales</div>
-                                <div class="ms-auto lh-1">
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item active" href="#">Last 7 days</a>
-                                            <a class="dropdown-item" href="#">Last 30 days</a>
-                                            <a class="dropdown-item" href="#">Last 3 months</a>
-                                        </div>
-                                    </div>
-                                </div>
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="row row-deck row-cards">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <span class="badge bg-red me-1 hvr-fade">Hots</span>
+                                    💥热门资源排行榜
+                                </h3>
                             </div>
-                            <div class="h1 mb-3">75%</div>
-                            <div class="d-flex md-2">
-                                <div>Conversion rate</div>
-                                <div class="ms-auto">
-                                    <span class="text-green d-inline-flex align-items-center lh-1">
-                                        7%
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24"
-                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                             stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <polyline points="3 17 9 11 13 15 21 7"></polyline>
-                                            <polyline points="14 7 21 7 21 14"></polyline>
-                                        </svg>
-                                    </span>
-                                </div>
+                            <table class="table card-table table-vcenter">
+                                <thead>
+                                <tr>
+                                    <th>资源名称</th>
+                                    <th colspan="2">下载次数</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for source in hot_sources %}
+                                    <tr>
+                                        <td>{{ source.source_name }}</td>
+                                        <td>{{ source.download_counts }}</td>
+                                        <td class="w-50">
+                                            <div class="progress progress-xs">
+                                                <div class="progress-bar bg-primary"
+                                                     style="width: {{ source.download_counts }}%"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <span class="badge bg-red me-1 hvr-fade">Hots</span>
+                                    💥热门课程排行榜
+                                </h3>
                             </div>
+                            <table class="table card-table table-vcenter">
+                                <thead>
+                                <tr>
+                                    <th>课程名称</th>
+                                    <th colspan="2">选课人数</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for course in hot_courses %}
+                                    <tr>
+                                        <td>{{ course.course_name }}</td>
+                                        <td>{{ course.students.count }}</td>
+                                        <td class="w-50">
+                                            <div class="progress progress-xs">
+                                                <div class="progress-bar bg-primary"
+                                                     style="width: {{ course.students.count }}%"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <span class="badge bg-red me-1 hvr-fade">Hots</span>
+                                    💥课程资源排行榜
+                                </h3>
+                            </div>
+                            <table class="table card-table table-vcenter">
+                                <thead>
+                                <tr>
+                                    <th>课程名称</th>
+                                    <th colspan="2">课程资源数量</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for course in max_courses %}
+                                    <tr>
+                                        <td>{{ course.course_name }}</td>
+                                        <td>{{ course.sources.count }}</td>
+                                        <td class="w-50">
+                                            <div class="progress progress-xs">
+                                                <div class="progress-bar bg-primary"
+                                                     style="width: {{ course.sources.count }}%"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

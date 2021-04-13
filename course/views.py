@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
+from school.models import School
 from .forms import CoursePostForm
 from .models import Course
 from user.models import Teacher, Profile
@@ -33,6 +34,7 @@ def course_post(request):
             data = course_post_form.cleaned_data
             course_name = data["course_name"]
             course_status = data["course_status"]
+            school_name = data["school_name"]
             teacher_names = data["teacher_names"]
             if check_course(course_name) is False:
                 return HttpResponse("已有该课程，请勿重复添加。")
@@ -40,6 +42,9 @@ def course_post(request):
             new_course.course_name = course_name
             new_course.course_status = course_status
             new_course.save()
+            school = School.objects.get(school_name=school_name)
+            school.courses.add(new_course)
+            school.save()
             for teacher in teacher_names:
                 teacher.courses.add(new_course)
                 teacher.save()
@@ -54,9 +59,16 @@ def course_post(request):
             name = teacher.teacher_name
             id = "id_teacher_names_%d" % i
             teacher_list.append(TeacherItem(name, teacher.id, id))
+        schools = School.objects.all()
+        school_list = []
+        for i, school in enumerate(schools):
+            name = school.school_name
+            id = "id_teacher_names_%d" % i
+            school_list.append(TeacherItem(name, school.school_id, id))
         context = {
             "form": course_post_form,
             "teacher_list": teacher_list,
+            "school_list": school_list,
             "page": "course",
             "sub_page": "course_post"
         }

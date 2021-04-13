@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load my_filters %}
 {% block content %}
     <div class="page-wrapper">
         <div class="container-fluid">
@@ -23,8 +24,9 @@
                                 发私信
                             </a>
                         </span>
-                            <a href="{% url 'user:sign_out' %}" class="btn btn-danger d-none d-sm-inline-block">
-                                退出
+                            <a href="{% url 'user:user_delete' user.id %}"
+                               class="btn btn-danger d-none d-sm-inline-block">
+                                删除账户
                             </a>
                         </div>
                     </div>
@@ -39,7 +41,7 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body text-center hvr-glow">
-                                        <div class="text-uppercase text-muted font-weight-medium">information</div>
+                                        <img src="{% static 'info.svg' %}" height="60" alt="">
                                         <div class="display-5 my-3">{{ user.username }}</div>
                                         <div class="display-6 my-3">{{ user_type }}</div>
                                         {% if user.profile.user_type == "student" %}
@@ -73,6 +75,16 @@
                                                     {{ course.course_name }}
                                                 </h2>
                                             {% endfor %}
+                                            {% for course in user.student.courses.all %}
+                                                <h2>
+                                                    {% if course.course_status == 'open' %}
+                                                        <span class="badge bg-success me-1 hvr-float-shadow">已开课</span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary me-1 hvr-float-shadow">未开课</span>
+                                                    {% endif %}
+                                                    {{ course.course_name }}
+                                                </h2>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
@@ -84,6 +96,17 @@
                                         </div>
                                         <div class="card-body">
                                             {% for course in user.teacher.courses.all %}
+                                                <h3>
+                                                    {% if course.course_status == 'open' %}
+                                                        <span class="badge bg-success me-1 hvr-float-shadow">已开课</span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary me-1 hvr-float-shadow">未开课</span>
+                                                    {% endif %}
+                                                    <span class="badge bg-cyan me-1 hvr-fade">选课人数：{{ course.students.count }}</span>
+                                                    {{ course.course_name }}
+                                                </h3>
+                                            {% endfor %}
+                                            {% for course in user.student.courses.all %}
                                                 <h3>
                                                     {% if course.course_status == 'open' %}
                                                         <span class="badge bg-success me-1 hvr-float-shadow">已开课</span>
@@ -133,7 +156,7 @@
                                                 <a href="{% url 'user:message_detail' message.id %}">
                                                     {{ message.title }}
                                                 </a>
-                                                <span class="badge bg-info me-1 hvr-fade">{{ message.send_time }}</span>
+                                                <span class="badge bg-info me-1 hvr-fade">{{ message.send_time|timesince_zh }}</span>
                                                 <span class="badge bg-teal me-1 hvr-fade">from：{{ message.send }}</span>
                                                 <span class="badge bg-secondary me-1 hvr-fade">未读</span>
                                             </h2>
@@ -155,7 +178,7 @@
                                                 <a href="{% url 'user:message_detail' message.id %}">
                                                     {{ message.title }}
                                                 </a>
-                                                <span class="badge bg-info me-1 hvr-fade">{{ message.send_time }}</span>
+                                                <span class="badge bg-info me-1 hvr-fade">{{ message.send_time|timesince_zh }}</span>
                                                 <span class="badge bg-teal me-1 hvr-fade">from：{{ message.send }}</span>
                                                 <span class="badge bg-success me-1 hvr-fade">已读</span>
                                             </h2>
@@ -177,7 +200,7 @@
                                                 <a href="{% url 'user:message_detail' message.id %}">
                                                     {{ message.title }}
                                                 </a>
-                                                <span class="badge bg-info me-1 hvr-fade">{{ message.send_time }}</span>
+                                                <span class="badge bg-info me-1 hvr-fade">{{ message.send_time|timesince_zh }}</span>
                                                 <span class="badge bg-teal me-1 hvr-fade">to：{{ message.receive }}</span>
                                                 {% if message.message_status == 'unread' %}
                                                     <span class="badge bg-secondary me-1 hvr-fade">未读</span>

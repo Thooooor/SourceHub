@@ -17,20 +17,20 @@
 <div class="page page-center">
     <div class="container-tight py-4">
         <div class="text-center mb-4">
-            <a href="."><img src="{% static 'logo2.svg' %}" height="36" alt=""></a>
+            <a href="."><img src="{% static 'logo.svg' %}" height="80" alt=""></a>
+            <h1 class="display-6 my-3">SourceHub</h1>
         </div>
         <form class="card card-md" action="{% url 'user:sign_in' %}" method="post" autocomplete="off">
             {% csrf_token %}
             <div class="card-body">
-                <h2 class="card-title text-center mb-4">Login to your account</h2>
                 <div class="mb-3">
                     <label class="form-label" for="email">邮箱地址</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter email">
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter email" required>
                 </div>
                 <div class="mb-2">
                     <label class="form-label" for="password">密码</label>
                     <div class="input-group input-group-flat">
-                        <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="on" required>
                         <span class="input-group-text">
                             <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"

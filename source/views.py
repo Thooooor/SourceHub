@@ -75,6 +75,15 @@ def source_delete(request, id):
     return redirect(to="source:source_list")
 
 
+@login_required(login_url="/user/sign-in/")
+def source_download_count(request):
+    id = request.GET.get('id')
+    source = Source.objects.get(source_id=id)
+    source.download_counts += 1
+    source.save()
+    return redirect("source:source_list")
+
+
 class CourseItem:
     def __init__(self, name, value, id):
         self.name = name

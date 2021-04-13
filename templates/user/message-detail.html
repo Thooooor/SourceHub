@@ -22,8 +22,11 @@
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
-                            <a href="{% url 'user:sign_out' %}" class="btn btn-primary d-none d-sm-inline-block">
+                            <a href="{% url 'user:message_post' %}" class="btn btn-primary d-none d-sm-inline-block">
                                 回复
+                            </a>
+                            <a href="{% url 'user:user_info' user.id %}" class="btn btn-secondary d-none d-sm-inline-block">
+                                返回
                             </a>
                         </div>
                     </div>

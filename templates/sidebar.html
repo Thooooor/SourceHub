@@ -5,16 +5,27 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <h1 class="navbar-brand navbar-brand-autodark page-title">
+            <img src="{% static 'logo.svg' %}" height="60" alt="">
+            &nbsp;
             SourceHub
         </h1>
         <h1 class="navbar-brand navbar-brand-autodark">
             <div class="nav-item dropdown">
                 <a class="nav-link d-flex lh-1 text-reset p-0" href="{% url 'user:user_info' user.id %}">
-                    <span class="avatar"
-                          style="background-image: url({% static 'student.svg' %}); border-radius: 50%;"></span>
+                {% if user.profile.user_type == 'teacher' %}
+                    <span class="avatar" style="background-image: url({% static 'teacher.svg' %}); border-radius: 50%;"></span>
+                {% else %}
+                    <span class="avatar" style="background-image: url({% static 'student.svg' %}); border-radius: 50%;"></span>
+                {% endif %}
                     <div class="d-none d-xl-block ps-2">
                         <div>{{ user.username }}</div>
-                        <div class="mt-1 small text-muted">{{ user.profile.user_type }}</div>
+                        <div class="mt-1 small text-muted">
+                            {% if user.profile.user_type == 'teacher' %}
+                                教师
+                            {% else %}
+                                学生
+                            {% endif %}
+                        </div>
                     </div>
                 </a>
             </div>
@@ -39,8 +50,9 @@
                         </span>
                     </a>
                 </li>
-                <li class="nav-item {% if page == 'school' %} active {% endif %}">
-                    <a class="nav-link" href="">
+                <li class="nav-item {% if page == 'school' %} active {% endif %} dropdown" id="school-li">
+                    <a class="nav-link dropdown-toggle" role="button" aria-expanded="true"
+                            {% if page != 'school' %} onclick="schoolClick()" {% endif %}>
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/file-text -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school"
                                  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -54,6 +66,14 @@
                             学院
                         </span>
                     </a>
+                    <div class="dropdown-menu {% if page == 'school' %} show {% endif %}" id="school-menu">
+                        <div class="dropdown-menu-columns">
+                            <div class="dropdown-menu-column">
+                                <a class="dropdown-item {% if sub_page == 'school_list' %} active {% endif %}"
+                                   href="{% url 'school:school-list' %}">学院列表</a>
+                            </div>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item {% if page == 'course' %} active {% endif %} dropdown" id="course-li">
                     <a class="nav-link dropdown-toggle" role="button" aria-expanded="true" {% if page != 'course' %}
@@ -138,6 +158,16 @@
     <script type="text/javascript">
         function courseClick() {
             let sourceMenu = document.getElementById("course-menu");
+            if (sourceMenu.className === "dropdown-menu show") {
+                sourceMenu.className = "dropdown-menu";
+            } else {
+                sourceMenu.className = "dropdown-menu show";
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function schoolClick() {
+            let sourceMenu = document.getElementById("school-menu");
             if (sourceMenu.className === "dropdown-menu show") {
                 sourceMenu.className = "dropdown-menu";
             } else {

@@ -19,9 +19,9 @@ class Semester(models.Model):
 class Course(models.Model):
     course_id = models.BigAutoField(primary_key=True)
     course_name = models.CharField(max_length=128)
-    semesters = models.ManyToManyField(Semester, related_name="courses")
+    semesters = models.ManyToManyField(Semester, related_name="courses", blank=True)
     course_status = models.CharField(max_length=128, default="open")
-    schools = models.ManyToManyField(School, blank=True, related_name="courses")
+    school = models.ForeignKey(School, blank=True, null=True, related_name="courses", on_delete=models.CASCADE)
 
     class Meta:
         ordering = ("course_id", )

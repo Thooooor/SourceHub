@@ -12,7 +12,7 @@
                             资源
                         </div>
                         <h2 class="page-title">
-                           资源列表
+                            资源列表
                         </h2>
                     </div>
                     <!-- Page title actions -->
@@ -33,10 +33,11 @@
                         <table class="table card-table table-vcenter text-nowrap datatable">
                             <thead>
                             <tr>
-                                <th>编号NO.</th>
                                 <th>资源名字</th>
                                 <th>相关课程</th>
                                 <th>上传者</th>
+                                <th>下载次数</th>
+                                <th>上传时间</th>
                                 <th>资源大小</th>
                                 <th>操作</th>
                             </tr>
@@ -44,7 +45,6 @@
                             <tbody>
                             {% for source in sources %}
                                 <tr>
-                                    <td>{{ source.source_id }}</td>
                                     <td>{{ source.source_name }}</td>
                                     <td>
                                         {% for course in source.courses.all %}
@@ -55,12 +55,19 @@
                                         <span class="badge bg-success me-1">{{ source.upload_user }}</span>
                                     </td>
                                     <td>
-                                        {{ source.source_file.size }} KB
+                                        <span class="badge bg-purple me-1">{{ source.download_counts }}</span>
                                     </td>
                                     <td>
-                                        <a  href="{{ source.source_file.url }}" class="btn btn-primary" download= id="">下载</a>
+                                        <span class="badge bg-yellow me-1">{{ source.upload_time|date }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-lime me-1">{{ source.source_file.size }} KB</span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ source.source_file.url }}" class="btn btn-primary" download id="{{ source.source_id }}" onclick="downloadCount(this)">下载</a>
                                         {% if source.upload_user == user %}
-                                            <a href="{% url 'source:source_delete' source.source_id %}" class="btn btn-danger">删除</a>
+                                            <a href="{% url 'source:source_delete' source.source_id %}"
+                                               class="btn btn-danger">删除</a>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -72,4 +79,12 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        function downloadCount(obj) {
+            location.href = '{% url "source:source_download_count" %}?id=' + obj.id;
+        }
+    </script>
 {% endblock %}

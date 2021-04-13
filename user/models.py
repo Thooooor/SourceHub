@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 from course.models import Course
 from school.models import School
@@ -46,8 +47,8 @@ class Message(models.Model):
     body = models.TextField()
     send = models.ForeignKey(User, on_delete=models.CASCADE, related_name="send_messages", null=True, blank=True)
     receive = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recv_messages", null=True, blank=True)
-    send_time = models.TimeField(auto_now=True)
-    read_time = models.TimeField(null=True, blank=True)
+    send_time = models.DateTimeField(default=timezone.now)
+    read_time = models.DateTimeField(null=True, blank=True)
     message_status = models.CharField(default="unread", max_length=128)
 
     class Meta:
